@@ -1,2 +1,48 @@
-# Auto detect text files and perform LF normalization
+# The build toolchain is 16-bit Borland C++ on Windows. Sources must
+# arrive in the working tree with CRLF no matter which platform the
+# checkout happens on, so eol is pinned here rather than left to each
+# developer's core.autocrlf.
+#
+# File names in this tree are a mix of upper and lower case (ACQUIRE.CPP,
+# SimpleKalmanFilter.cpp, WPEAK.RC, HELP.rtf), and gitattributes patterns
+# are case-sensitive, so every rule below is written with character
+# classes to match either.
+
 * text=auto
+
+# --- source, resources and plain text: always CRLF --------------------
+*.[Cc]                  text eol=crlf
+*.[Cc][Pp][Pp]          text eol=crlf
+*.[Hh]                  text eol=crlf
+*.[Rr][Cc]              text eol=crlf
+*.[Dd][Ee][Ff]          text eol=crlf
+*.[Hh][Pp][Jj]          text eol=crlf
+*.[Bb][Aa][Tt]          text eol=crlf
+*.[Tt][Xx][Tt]          text eol=crlf
+*.[Ii][Nn][Ii]          text eol=crlf
+*.[Cc][Nn][Tt]          text eol=crlf
+
+# --- documentation: read on any platform, leave it alone --------------
+*.md                    text eol=lf
+VERSION                 text eol=lf
+.gitignore              text eol=lf
+.gitattributes          text eol=lf
+
+# --- binaries: never normalize, never diff as text --------------------
+*.[Bb][Mm][Pp]          binary
+*.[Ii][Cc][Oo]          binary
+*.[Ee][Xx][Ee]          binary
+*.[Oo][Bb][Jj]          binary
+*.[Rr][Ee][Ss]          binary
+*.[Ss][Yy][Mm]          binary
+*.[Hh][Ll][Pp]          binary
+*.[Gg][Ii][Dd]          binary
+*.[Pp][Rr][Jj]          binary
+*.[Dd][Ss][Kk]          binary
+*.[Rr][Tt][Ff]          binary
+*.[Dd][Oo][Cc]          binary
+
+# --- instrument data: fixed-layout records, not text ------------------
+*.[Jj][Oo][Bb]          binary
+*.[Rr][Uu][Nn]          binary
+*.[Ww][Nn][Dd]          binary

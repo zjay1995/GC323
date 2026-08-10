@@ -1,0 +1,18 @@
+# Peak Works - product versions.
+#
+# This file is the single source of truth for version numbers. Nothing else
+# in the tree may hard-code a version: tools\build.bat reads the line for the
+# model being built and generates src\VERSION.H from it, and the About box
+# shows what it generated.
+#
+# One line per product, "<model>=<major>.<minor>.<patch>". No spaces.
+# The model name must match a file in config\, e.g. gc323 -> config\gc323.h.
+#
+# Bump patch for a bug-fix release, minor for new behaviour, major for a
+# change that breaks methods, data files or the instrument interface.
+# Every bump needs a matching section in CHANGELOG.md and a bug list in
+# docs\bugs\.
+
+gc323=2.5.0
+gc301=2.5.0
+m30=0.1.0
