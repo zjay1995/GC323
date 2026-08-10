@@ -385,6 +385,12 @@ void *Method::readOld(iwstream &is)
   det[1].NandBtime=ConvertTime(m.NandBtime[1]);
   det[0].NandBlen=ConvertTime(m.NandBlen[0]);
   det[1].NandBlen=ConvertTime(m.NandBlen[1]);
+  // Cap total N&B window to 5 seconds so early negative peaks can be detected. P.P. 04/21/26
+  for(int _d=0; _d<2; _d++) {
+    if(det[_d].NandBtime > 5) det[_d].NandBtime = 5;
+    if(det[_d].NandBtime + det[_d].NandBlen > 5)
+      det[_d].NandBlen = (det[_d].NandBtime < 5) ? (5 - det[_d].NandBtime) : 1;
+  }
   det[0].peak_alg=m.peak_alg[0];
   det[1].peak_alg=m.peak_alg[1];
   det[0].detect_meth=m.detect_meth[0];

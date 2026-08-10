@@ -13,7 +13,7 @@
 
 Detector::Detector()
  :
-  NandBtime(1), NandBlen(1),
+  NandBtime(1), NandBlen(4),  // 5 s total N&B window. P.P. 04/21/26
   peak_alg(0),
   detect_meth(0),
 //  gain(0),

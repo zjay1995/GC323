@@ -206,6 +206,8 @@ class Integrator: public RawData {
 
   BOOL peak_rising;
 
+  int peak_polarity; // +1 for positive peaks, -1 for negative peaks. Added to support negative peak detection.
+
   int analyze_segment;
   //int peakX, peakY;
 
