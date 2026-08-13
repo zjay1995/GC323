@@ -30,6 +30,10 @@ Products: gc323 2.5.0, gc301 2.5.0, m30 0.1.0 (not shippable)
   windows keep the 1 s / 6 s values set for them in 2021.
 - Note the interaction with short valve windows - see
   [docs/bugs/2.5.0.md](docs/bugs/2.5.0.md).
+- The status bar at the bottom of the main window is yellow while an
+  autozero is running and green the rest of the time. Both detectors
+  share the bar; it is yellow while either relay is closed, and it
+  follows the timed windows during a run as well as the toolbar buttons.
 
 The rest of this release is the repository work: no other change to
 measurement, control or reporting. It is the point where a build can be

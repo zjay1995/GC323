@@ -76,6 +76,25 @@ extern long pow10_array[4]; // adding range 1000. P.P. 12/11/09  back. 06/20/11
 
 static MainWindow *_pMainWindow;
 
+// Autozero state, for the status bar at the bottom of the main window: it goes yellow while an
+// autozero is running and back to green when it finishes. Det A and det B share the one bar, so it
+// stays yellow while either relay is closed. Set by Acquire::AutoZero() and Acquire::AutoZeroB()
+// below, which every autozero goes through - the timed windows during a run and the two toolbar
+// buttons alike. JW
+static BOOL bAutoZeroActive  = FALSE;
+static BOOL bAutoZeroBActive = FALSE;
+
+static void ShowAutoZeroState()
+{
+    MainWindow *pWnd = _pMainWindow;   // set once an Acquire exists
+    if(!pWnd) {                        // manual autozero before the first run
+        pWnd = (MainWindow *)GetApplicationObject()->MainWindow;  // as in JOB.CPP
+    }
+    if(!pWnd) return;
+    pWnd->SetLampState((bAutoZeroActive||bAutoZeroBActive)?
+                         FrameWindow::LAMP_BUSY: FrameWindow::LAMP_READY);
+}
+
 #if INTERNAL()
 static int _cur_gain = 0;
 BOOL Lamp_error = 0;  // bit 5 in alarm port, added for diagnostics. P.P. 11/16/02
@@ -2779,6 +2798,9 @@ void Acquire::SetLamps(BOOL bOn)
 void Acquire::AutoZero(BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL_16.
 {
     TRACE1( "Acquire::AutoZero(%d)", on );
+    bAutoZeroActive = on;      // status bar: yellow while zeroing, green when done. JW
+    ShowAutoZeroState();       // set here, above the DEMO return and the board #ifs, so the bar
+                               // behaves the same in every model's build
 #if DEMO() // added. P.P. 10/05/04
     return;
 #endif
@@ -2829,6 +2851,8 @@ void Acquire::AutoZero(BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL
 void Acquire::AutoZeroB(BOOL on)
 {
     TRACE1( "Acquire::AutoZeroB(%d)", on );
+    bAutoZeroBActive = on;     // shares the one status bar with det A. JW
+    ShowAutoZeroState();
 #if DEMO() // added. P.P. 10/05/04
     return;
 #endif

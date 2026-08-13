@@ -36,10 +36,20 @@
 #include "frame.h"
 #endif
 
+// Height of the status line strip along the bottom of the client area. WMSize()
+// below hands StatusLine exactly this many pixels, and Paint() colours the same
+// strip, so the two must agree.
+static const int nStatusLineHeight = 20;
+
+// Width of the always-visible block at the right-hand end of the bar - see the
+// note above Paint().
+static const int nLampWidth = 72;
+
 FrameWindow:: FrameWindow(LPSTR ATitle, int MenuId, LPSTR HelpFile, PTModule AModule)
  : TMDIFrame(ATitle, MenuId, AModule),
   sl(new StatusLine(this, AModule)),
-  tb(new ToolBar(this, AModule))
+  tb(new ToolBar(this, AModule)),
+  nLampState(LAMP_READY)
 {
   lstrcpy(szHelpFileName,HelpFile);
   Attr.Style|=WS_CLIPCHILDREN;
@@ -97,11 +107,71 @@ void FrameWindow::WMMouseMove(RTMessage Msg)
 #ifndef  _WINLIB_PC_H
 #include "winlib\pc.h"
 #endif
+#ifndef  _WINLIB_COLOR_H
+#include "winlib\color.h"
+#endif
+#ifndef  _WINLIB_BRUSH_H
+#include "winlib\brush.h"
+#endif
+
+// The bar that shows what the instrument is doing.
+//
+// StatusLine comes from the WINUTIL library, whose source is not in this
+// repository - all we get to do is call sl->Paint(pc). We cannot ask it for its
+// colours, and we do not know whether it fills its own background. So the state
+// colour is applied twice, deliberately:
+//
+//   before sl->Paint()  the whole strip is filled with the state colour. If
+//                       StatusLine draws its text straight onto what is already
+//                       there, the entire bar takes the colour - which is what
+//                       we are after.
+//   after  sl->Paint()  a block at the right-hand end is filled again. That one
+//                       shows whatever StatusLine does, because nothing paints
+//                       over it afterwards.
+//
+// If StatusLine paints its own background, only the end block is visible and the
+// bar still reads yellow-while-busy, green-when-not. When WINUTIL/STATLINE.CPP
+// is available, make StatusLine::Paint draw its text transparently and the end
+// block can be deleted.
+static Color LampColor(int state)
+{
+  return state==FrameWindow::LAMP_BUSY? Yellow: LightGreen;
+}
+
 void FrameWindow::Paint(HDC PaintDC, PAINTSTRUCT _FAR & PaintInfo)
 {
   PC pc(PaintDC,&PaintInfo);
+
+  WRect rStatus;
+  if(sl) {
+    ::GetClientRect(HWindow,(LPRECT)&rStatus);
+    rStatus.Top()=rStatus.Bottom()-nStatusLineHeight;
+    pc.FillRect(rStatus,LogBrush(LampColor(nLampState)));
+  }
+
   if(sl) sl->Paint(pc);
   if(tb) tb->Paint(pc);
+
+  if(sl) {
+    WRect rLamp=rStatus;
+    rLamp.Left()=rLamp.Right()-nLampWidth;
+    rLamp.Left()+=2;  rLamp.Right()-=2;
+    rLamp.Top()+=2;   rLamp.Bottom()-=2;
+    if(rLamp.Right()>rLamp.Left()) {
+      pc.FillRect(rLamp,LogBrush(LampColor(nLampState)));
+    }
+  }
+}
+
+void FrameWindow::SetLampState(int state)
+{
+  if(state==nLampState) return;
+  nLampState=state;
+  if(!HWindow) return;   // called before the window exists - Paint() will use it
+  WRect r;    ::GetClientRect(HWindow,(LPRECT)&r);
+  r.Top()=r.Bottom()-nStatusLineHeight;
+  // FALSE: no background erase, Paint() fills the whole strip itself.
+  ::InvalidateRect(HWindow,(LPRECT)&r,FALSE);
 }
 
 void FrameWindow::WMSize(RTMessage Msg)
@@ -111,8 +181,8 @@ void FrameWindow::WMSize(RTMessage Msg)
     WRect rClient;    ::GetClientRect(HWindow,(LPRECT)&rClient);
     WRect r;
     if(sl) {
-      r=rClient; r.Top()=r.Bottom()-20; sl->Size(r);
-      rClient.Bottom()-=20;
+      r=rClient; r.Top()=r.Bottom()-nStatusLineHeight; sl->Size(r);
+      rClient.Bottom()-=nStatusLineHeight;
     }
     if(tb) {
       r=rClient; r.Bottom()=r.Top()+25; tb->Size(r);

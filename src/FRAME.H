@@ -15,6 +15,13 @@ class FrameWindow : public TMDIFrame {
   ToolBar *tb;
   char szHelpFileName[128];
 
+  // Colour of the status line at the bottom of the window. Green when nothing
+  // is happening, yellow while the instrument is busy with something the
+  // operator should wait for - today that is an autozero. See FRAME.CPP.
+  enum { LAMP_READY = 0, LAMP_BUSY = 1 };
+  int nLampState;
+  void SetLampState(int state);   // repaints the bar only when the state changes
+
   FrameWindow(LPSTR ATitle, int MenuId, LPSTR HelpFile, PTModule AModule = NULL);
   virtual ~FrameWindow();
   virtual void SetupWindow();
