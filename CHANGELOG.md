@@ -8,8 +8,32 @@ Versions come from `VERSION`; see [docs/RELEASING.md](docs/RELEASING.md).
 Bug list: [docs/bugs/2.5.0.md](docs/bugs/2.5.0.md)
 Products: gc323 2.5.0, gc301 2.5.0, m30 0.1.0 (not shippable)
 
-No functional change to measurement, control or reporting. This release
-is the point where a build can be reproduced from the repository.
+**Temperature control**
+
+- The oven enable relay never closed. `Acquire::EnableOven()` tested
+  `if(AcquireRUNNING=1)` - an assignment, always true - so it returned
+  before touching the relay and `oven_enabled` never became TRUE. The
+  pulsing output from `SetOvenTemperature()` was driving a contact that
+  was never enabled. `Acquire::Fan()` has the same guard written
+  correctly, as `==`.
+- `delete tempcontrol` did not clear the pointer. TRANS_METH is
+  re-entered per point and per calibration, so a ramped method followed
+  by an isothermal one left `Continue()` calling `ControlTemperature()`
+  on freed memory, and the destructor deleted it again.
+
+**Autozero**
+
+- The valve-triggered autozero hold is 10 s, was 3 s. It was written out
+  as `3*1000UL` in eight places; those are now `AUTOZERO_HOLD_MS` and
+  `AUTOZERO_DELAY_MS` at the top of `src/ACQUIRE.CPP`. The 3 s delay
+  between the valve moving and the zero starting is unchanged, and X3's
+  windows keep the 1 s / 6 s values set for them in 2021.
+- Note the interaction with short valve windows - see
+  [docs/bugs/2.5.0.md](docs/bugs/2.5.0.md).
+
+The rest of this release is the repository work: no other change to
+measurement, control or reporting. It is the point where a build can be
+reproduced from the repository.
 
 **Product names and versions**
 

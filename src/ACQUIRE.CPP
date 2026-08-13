@@ -320,6 +320,19 @@ const byte autozeroB_bit_number = 1; // in AUXPORT 1608 board, separate autozero
 #else
 const byte autozeroB_bit_number = 7; // in port A 1208 board, separate autozero for det B. P.P. 06/21/17
 #endif
+// How long the autozero relay is held closed for each of the valve-triggered autozero windows, and
+// how long we wait after the valve moves before starting one. These were written out as 3*1000UL in
+// eight places, so "make the autozero longer" meant finding all eight and getting them consistent.
+// Hold raised from 3 s to 10 s. JW
+#define AUTOZERO_HOLD_MS   (10*1000UL)  // was 3*1000UL
+#define AUTOZERO_DELAY_MS  ( 3*1000UL)  // wait after the valve moves before zeroing - unchanged
+
+// Watch the valve open times in the Method. A valve gets two windows: one when it opens and one when
+// it closes. The "on" window runs from open+DELAY to open+DELAY+HOLD, so if the valve is open for
+// less than HOLD the first window is still running when the second one starts, and the first
+// window's AutoZero(FALSE) then cuts the second one short. At a 3 s hold that needed an X1 open time
+// under 3 s to happen; at 10 s it happens whenever X1 (or X2) is open for less than 10 s. JW
+
 const byte dsb_temperature_bit_number = 4; // in PortB P.P. 07/26/18
 const byte dsb_fan_bit_number = 0; // in PortB of USB24IO or 1208, P.P. 08/03/18
 const byte fan_bit_number    = 2; // P.P. 02/23/10. in port B of USB-1208LS for oven, same as oven_door
@@ -2388,7 +2401,12 @@ void Acquire::TCDDetector(BOOL on)
 // new function to control temp enable relay contacts. P.P. 06/30/06
 void Acquire::EnableOven(BOOL on)
 {
-    if(AcquireRUNNING=1) return;
+// Was "if(AcquireRUNNING=1) return;" - an assignment, not a comparison. It was always true, so this
+// function returned before it ever touched the relay: the oven enable contact never closed and
+// oven_enabled never became TRUE, whatever SetOvenTemperature() did with the pulsing output. It also
+// set AcquireRUNNING to 1 as a side effect, from Acquire::Start(), which had just cleared it to 0.
+// Acquire::Fan() above has the same guard written correctly. JW
+    if(AcquireRUNNING==1) return;
 //#if DEMO()||GC312()// added. P.P. 03/18/06
 #if DEMO() // changed. P.P. 11/25/06
     return;
@@ -3884,7 +3902,8 @@ Acquire::~Acquire()
     if(tempcontrol) {  // added in this variant 07/23/02
 // if(pMethod->method_table.RampingEnabled) {    // P.P. replaced. P.P. 09/29/02
         delete tempcontrol;
-    }
+        tempcontrol = 0;  // harmless here (the object is going away), but the pointer is tested by
+    }                     // name in Continue(); keep the two delete sites consistent. JW
 // added. P.P. 09/29/02
 #if !GC312() // added. P.P. 03/19/06
     if(!Fatal_error) {  // cond. added, to leave it ON if not on emergency stop. P.P. 08/10/04
@@ -4585,6 +4604,10 @@ int Acquire::Continue()
 
             // setting initial temperatures
             delete tempcontrol; // must be zero     // moved here. P.P. 05/18/02
+            tempcontrol = 0;    // and now it is. TRANS_METH is re-entered per point/per cal, so when a
+                                // ramped method is followed by an isothermal one on the same Acquire,
+                                // the else branch below left the freed pointer in place and line ~4560
+                                // then called ControlTemperature() on it every idle tick. JW
             if(pMethod->method_table.RampingEnabled) {    // P.P. 05/17/02.
 //        delete tempcontrol; // must be zero
 
@@ -5793,12 +5816,12 @@ int Acquire::Continue()
                        ((method_table.x1_off_time - method_table.x1_time)>0)) { //
                         dwXvalveTime = GetTickCount()+ method_table.x1_time*1000UL; // changed. P.P. 07/30/04
                         dwXvalveOffTime = GetTickCount()+ method_table.x1_off_time*1000UL; // added. P.P. 06/18/06
-                        dwAutoZero1 = dwXvalveTime + 3*1000UL;    // P.P. 08/06/04  // X1 time for switching range. P.P. 05/12/17
-                        dwAutoZero1_off = dwAutoZero1 + 3*1000UL; // P.P. 08/06/04
+                        dwAutoZero1 = dwXvalveTime + AUTOZERO_DELAY_MS;    // P.P. 08/06/04  // X1 time for switching range. P.P. 05/12/17
+                        dwAutoZero1_off = dwAutoZero1 + AUTOZERO_HOLD_MS; // P.P. 08/06/04
                         dwRange_1 = dwXvalveTime; // change range for range_1. P.P. 05/12/17
                         dwRange_1_off = dwXvalveOffTime; // added to return range back. P.P. 05/12/17
-                        dwAutoZero2 = dwXvalveOffTime + 3*1000UL;    //  Zeroing after switching range back. P.P. 05/12/17
-                        dwAutoZero2_off = dwAutoZero2 + 3*1000UL; //
+                        dwAutoZero2 = dwXvalveOffTime + AUTOZERO_DELAY_MS;    //  Zeroing after switching range back. P.P. 05/12/17
+                        dwAutoZero2_off = dwAutoZero2 + AUTOZERO_HOLD_MS; //
 
                     }
                     else {
@@ -5821,12 +5844,12 @@ int Acquire::Continue()
                        ((method_table.x2_off_time - method_table.x2_time)>0)) { //
                         dwXvalve2Time = GetTickCount()+ method_table.x2_time*1000UL;
                         dwXvalve2OffTime = GetTickCount()+ method_table.x2_off_time*1000UL;
-                        dwAutoZero3 = dwXvalve2Time + 3*1000UL;    //  now X2 valve for this as well as x5 and x3. P.P. 09/11/15
-                        dwAutoZero3_off = dwAutoZero3 + 3*1000UL; // was dwAutoZero2 (X1 time) - AZ-B never got turned off. JW
+                        dwAutoZero3 = dwXvalve2Time + AUTOZERO_DELAY_MS;    //  now X2 valve for this as well as x5 and x3. P.P. 09/11/15
+                        dwAutoZero3_off = dwAutoZero3 + AUTOZERO_HOLD_MS; // was dwAutoZero2 (X1 time) - AZ-B never got turned off. JW
                         dwRange_1_2 = dwXvalve2Time; // switch to new range. P.P. 05/12/17
                         dwRange_1_2_off = dwXvalve2OffTime; // added to return range back. P.P. 09/18/15
-                        dwAutoZero4 = dwXvalve2OffTime + 3*1000UL;    //
-                        dwAutoZero4_off = dwAutoZero4 + 3*1000UL; // was dwAutoZero3 (earlier than AZ4 on) - AZ-B never got turned off. JW
+                        dwAutoZero4 = dwXvalve2OffTime + AUTOZERO_DELAY_MS;    //
+                        dwAutoZero4_off = dwAutoZero4 + AUTOZERO_HOLD_MS; // was dwAutoZero3 (earlier than AZ4 on) - AZ-B never got turned off. JW
                     }
                     else {
                         dwXvalve2Time = 0;
@@ -5843,6 +5866,9 @@ int Acquire::Continue()
                        ((method_table.x3_off_time - method_table.x3_time)>0)) {
                         dwXvalve3Time = GetTickCount()+ method_table.x3_time*1000UL;
                         dwXvalve3OffTime = GetTickCount()+ method_table.x3_off_time*1000UL;
+// X3's two windows are deliberately different from X1's and X2's - 1 s delay, 6 s hold, set that way
+// on 6/28/2021 - so they were left alone by the 3 s -> 10 s change. To bring them into line, use
+// AUTOZERO_DELAY_MS and AUTOZERO_HOLD_MS here as well. JW
                         dwAutoZero5 = dwXvalve3Time + 1*1000UL;    //  added j.w 6/28/2021
                         dwAutoZero5_off = dwAutoZero5 + 6*1000UL; //
                         dwRange_1_3 = dwXvalve3Time; // switch to new range. P.P. 05/12/17
