@@ -4,22 +4,22 @@ Control and chromatogram software for the **GC323 Gas Chromatograph** (PID Analy
 
 This is the official repository for the GC323 build.
 
-Current release: **v2.4.45**, built 2026-08-25 → `GC323_v2.4.45_20260825.exe`
+Current release: **v70.28**, built 2026-08-25 → `GC323_v70.28.exe`
 
 ## Repository layout
 
 | Path | What it is |
 |---|---|
-| `GC323_v2.4.45/` | Source for the current release. Build this. |
-| `GC323_v2.4.45_20260825.exe` | The compiled release binary. |
+| `GC323_v70.28/` | Source for the current release. Build this. |
+| `GC323_v70.28.exe` | The compiled release binary. |
 | `BORLANDC/` | The Borland C++ toolchain used to build it. |
 | `gc323-2026-08-07/` | Earlier source tree, kept for reference. Not the build tree. |
 | `changelog.docx` | Change history, newest entry first. |
 
 ## Building
 
-Open `GC323_v2.4.45/WPEAK.PRJ` in the Borland IDE (`BORLANDC/BIN`) and build. The
-output is `WPEAK.EXE`; rename it to `GC323_v<version>_<YYYYMMDD>.exe` when releasing.
+Open `GC323_v70.28/WPEAK.PRJ` in the Borland IDE (`BORLANDC/BIN`) and build. The
+output is `WPEAK.EXE`; rename it to `GC323_v<version>.exe` when releasing.
 
 `WINSTUB.EXE` must stay in the source folder — `WPEAK.DEF` names it, and the link
 fails without it. `WPEAK.RC` also pulls three bitmaps (`bkgr`, `statbar`, `statline`)
@@ -52,7 +52,20 @@ has not.
 
 ## Running on 64-bit Windows
 
-The application is a **16-bit Windows (NE) executable**. 64-bit editions of Windows
-have no NTVDM subsystem, so it cannot be launched directly on a 64-bit machine —
-Windows reports it as an unsupported application. It needs either a 32-bit Windows
-installation, a virtual machine, or a 16-bit compatibility layer.
+The application is a **16-bit Windows (NE) executable**, so 64-bit editions of Windows
+cannot launch it directly — they have no NTVDM subsystem. It does run under
+**otvdm (winevdm)**, which is kept in `_tools/otvdm/`.
+
+**To run it:** double-click `Run GC323.cmd`.
+
+Verified working on Windows 11 Home 64-bit, 2026-08-25. The program starts and reaches
+its own hardware check, then reports `CBW32.dll not found` because the Measurement
+Computing Universal Library is not installed on that PC. Both `CBW32.DLL` and
+`CTL3DV2.DLL` are loaded at runtime with fallbacks rather than linked at load time, so
+the program keeps going without them. That is enough to check the UI, the About box and
+Method settings — it is **not** enough to run an instrument. For that, use a PC with the
+MCC Universal Library installed and the DAQ hardware attached.
+
+otvdm can also register itself to open 16-bit executables on double-click
+(`_tools/otvdm/otvdm-v0.9.0/install.inf`), but that changes system file associations,
+so it is left off by default.
