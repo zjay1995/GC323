@@ -1,0 +1,459 @@
+Binary file about.obj matches
+ACQUIRE.BAK:	     // definitions added. P.P. 11/28/04
+ACQUIRE.BAK:// definition of function to convert
+ACQUIRE.BAK://  if(temperature<= 0) { // P.P. 03/07/18  added to definitely turn the heater OFF if themperature is set to 0.
+ACQUIRE.BAK://  if(temperature<= 0) { // P.P. 03/07/18  added to definitely turn the heater OFF if themperature is set to 0.
+ACQUIRE.BAK:///   added to open oven only if > 3 degree than initial. P.P. 08/09/02
+ACQUIRE.BAK:    pRun->runrawdata.gain[n]=pDetector->gain; //  replaced, to have the initial range as in Dee\tector dialog. P.P. 05/19/17
+ACQUIRE.BAK:      gain[n]=pDetector->gain; // initalize current gain from method
+ACQUIRE.BAK:    gain[n]=pDetector->gain; // initalize current gain from method
+ACQUIRE.BAK:	  InitTWA();
+ACQUIRE.BAK:// Added initialization to set Cal, Sample, Imject, Alarm, Lamp, Autozero,
+ACQUIRE.BAK:   Lamp_error = 0;  // added to initialize diagnostics as OK. P.P. 11/16/02
+ACQUIRE.BAK://     dwShowMessageTime = 0L; // will be initialized in other place. P.P. 07/31/10
+ACQUIRE.BAK:      // setting initial temperatures
+ACQUIRE.BAK://      dwShowMessageTime = GetTickCount() + 2*1000UL; // initialized. P.P. 07/31/10
+ACQUIRE.BAK:         // all initialization in Acquire::Start
+ACQUIRE.BAK://            InitDAC();               // remove - not needed! P.P. 05/03/04 removed 04/28/06
+ACQUIRE.BAK://	    gain[n] = pMethod->det[n].gain; // added to initialize. P.P. 10/05/03
+ACQUIRE.BAK:	    pMainWindow->sl->Replace("Initial Hold");
+ACQUIRE.BAK:	    pMainWindow->sl->Replace("Initial Hold");
+ACQUIRE.BAK:	dwTimeOn = GetTickCount() + duty_time_on;  // use the initial one. P.P. 04/08/19
+ACQUIRE.BAK:    int check1 = InitInternal();
+ACQUIRE.BAK://void InitInternal()  // modified 11/11/02. P.P. If DDA_2 digital needed - should be addded later.
+ACQUIRE.BAK:int InitInternal()  // modified 01/01/07. P.P. to exit if board number is incorrect.
+ACQUIRE.BAK:#if PMD_12LS()||PMD_12FS()||CBWUSB_IO() // initialize portA to LOW. P.P. 03/13/18
+ACQUIRE.BAK:  My_cbDOut(CBWDEVICE_1024, FIRSTPORTA, 0x00); // added to initialize to OFF
+ACQUIRE.BAK:  My_cbDOut(CBWDEVICE_1024, FIRSTPORTB, 0x00); // added to initialize to OFF
+ACQUIRE.BAK:  My_cbDOut(CBWDEVICE_1024, FIRSTPORTCL, 0x00); // added to initialize to OFF
+ACQUIRE.BAK:  My_cbDOut(CBWDEVICE_1024, FIRSTPORTCH, 0x00); // added to initialize to OFF
+ACQUIRE.BAK:  My_cbDOut(CBWDEVICE_1024_2, FIRSTPORTA, 0x00); // added to initialize to OFF
+ACQUIRE.BAK:  My_cbDOut(CBWDEVICE_1024_2, FIRSTPORTB, 0x00); // added to initialize to OFF
+ACQUIRE.BAK:  My_cbDOut(CBWDEVICE_1024_2, FIRSTPORTCL, 0x00); // added to initialize to OFF
+ACQUIRE.BAK:  My_cbDOut(CBWDEVICE_1024_2, FIRSTPORTCH, 0x00); // added to initialize to OFF
+ACQUIRE.BAK:// initialization of PCI24 and PCI48 boards added. P.P. 06/17/05
+ACQUIRE.BAK:// end of PCI 24/48 initialization. P.P. 06/17/05
+ACQUIRE.CPP:	     // definitions added. P.P. 11/28/04
+ACQUIRE.CPP:// definition of function to convert
+ACQUIRE.CPP://  if(temperature<= 0) { // P.P. 03/07/18  added to definitely turn the heater OFF if themperature is set to 0.
+ACQUIRE.CPP://  if(temperature<= 0) { // P.P. 03/07/18  added to definitely turn the heater OFF if themperature is set to 0.
+ACQUIRE.CPP:///   added to open oven only if > 3 degree than initial. P.P. 08/09/02
+ACQUIRE.CPP:    pRun->runrawdata.gain[n]=pDetector->gain; //  replaced, to have the initial range as in Dee\tector dialog. P.P. 05/19/17
+ACQUIRE.CPP:      gain[n]=pDetector->gain; // initalize current gain from method
+ACQUIRE.CPP:    gain[n]=pDetector->gain; // initalize current gain from method
+ACQUIRE.CPP:	  InitTWA();
+ACQUIRE.CPP:// Added initialization to set Cal, Sample, Imject, Alarm, Lamp, Autozero,
+ACQUIRE.CPP:   Lamp_error = 0;  // added to initialize diagnostics as OK. P.P. 11/16/02
+ACQUIRE.CPP://     dwShowMessageTime = 0L; // will be initialized in other place. P.P. 07/31/10
+ACQUIRE.CPP:      // setting initial temperatures
+ACQUIRE.CPP://      dwShowMessageTime = GetTickCount() + 2*1000UL; // initialized. P.P. 07/31/10
+ACQUIRE.CPP:         // all initialization in Acquire::Start
+ACQUIRE.CPP://            InitDAC();               // remove - not needed! P.P. 05/03/04 removed 04/28/06
+ACQUIRE.CPP://	    gain[n] = pMethod->det[n].gain; // added to initialize. P.P. 10/05/03
+ACQUIRE.CPP:	    pMainWindow->sl->Replace("Initial Hold");
+ACQUIRE.CPP:	    pMainWindow->sl->Replace("Initial Hold");
+ACQUIRE.CPP:	dwTimeOn = GetTickCount() + duty_time_on;  // use the initial one. P.P. 04/08/19
+ACQUIRE.CPP:    int check1 = InitInternal();
+ACQUIRE.CPP://void InitInternal()  // modified 11/11/02. P.P. If DDA_2 digital needed - should be addded later.
+ACQUIRE.CPP:int InitInternal()  // modified 01/01/07. P.P. to exit if board number is incorrect.
+ACQUIRE.CPP:#if PMD_12LS()||PMD_12FS()||CBWUSB_IO() // initialize portA to LOW. P.P. 03/13/18
+ACQUIRE.CPP:  My_cbDOut(CBWDEVICE_1024, FIRSTPORTA, 0x00); // added to initialize to OFF
+ACQUIRE.CPP:  My_cbDOut(CBWDEVICE_1024, FIRSTPORTB, 0x00); // added to initialize to OFF
+ACQUIRE.CPP:  My_cbDOut(CBWDEVICE_1024, FIRSTPORTCL, 0x00); // added to initialize to OFF
+ACQUIRE.CPP:  My_cbDOut(CBWDEVICE_1024, FIRSTPORTCH, 0x00); // added to initialize to OFF
+ACQUIRE.CPP:  My_cbDOut(CBWDEVICE_1024_2, FIRSTPORTA, 0x00); // added to initialize to OFF
+ACQUIRE.CPP:  My_cbDOut(CBWDEVICE_1024_2, FIRSTPORTB, 0x00); // added to initialize to OFF
+ACQUIRE.CPP:  My_cbDOut(CBWDEVICE_1024_2, FIRSTPORTCL, 0x00); // added to initialize to OFF
+ACQUIRE.CPP:  My_cbDOut(CBWDEVICE_1024_2, FIRSTPORTCH, 0x00); // added to initialize to OFF
+ACQUIRE.CPP:// initialization of PCI24 and PCI48 boards added. P.P. 06/17/05
+ACQUIRE.CPP:// end of PCI 24/48 initialization. P.P. 06/17/05
+ACQUIRE.H:    , WAIT_OVEN_DOWN           // new to cool oven down 5 degrees below initial. P.P. 08/08/02
+ACQUIRE.H:  DWORD dwRange_1_off;   //    // P.P. 09/18/15  at this time, retutn to initial range.
+ACQUIRE.H://void InitInternal();
+ACQUIRE.H:int InitInternal(); // replacement. P.P. 01/01/07
+Binary file acquire.obj matches
+CALC.BAK:      // Initialize start of peak by Trap. rule.
+CALC.BAK:        // Initialize start of peak by Trap. rule.
+CALC.BAK:      // Initialize start of peak by Trap. rule.
+CALC.BAK:    // Initialize start of peak by Trap. rule.
+CALC.BAK:    peak_rising = FALSE;    // Initialize flag
+CALC.CPP:      // Initialize start of peak by Trap. rule.
+CALC.CPP:        // Initialize start of peak by Trap. rule.
+CALC.CPP:      // Initialize start of peak by Trap. rule.
+CALC.CPP:    // Initialize start of peak by Trap. rule.
+CALC.CPP:    peak_rising = FALSE;    // Initialize flag
+CALC.H:void InitTWA();
+CALC.H:void InitDAC();                        // added P.P. 12/22/01
+CALC.H:void InitTotalList();
+Binary file calc.obj matches
+cbw.h:#define BADCHIPNUM         82   /* Invalid chip number used with cbC9513Init */
+cbw.h:#define CTRNOINIT          89   /* Counter was not initialized */
+cbw.h:#define BADINITIALDELAY				199 /* Invalid initial delay specified */
+cbw.h:#define WIN95_CANNOT_SETUP_ISR_DATA   302 /* 32 bit - failure on INIT_ISR_DATA IOCTL call */
+cbw.h:#define WIN31_CANNOT_SETUP_ISR_DATA   303 /* 32 bit - failure on INIT_ISR_DATA IOCTL call */
+cbw.h:#define CANT_INIT_ISR_INFO		332		/* IOCTL call failed on VDD_API_INIT_ISR_INFO */
+cbw.h:#define OUTPUT_INITIAL_STATE_LOW	0x000000
+cbw.h:#define OUTPUT_INITIAL_STATE_HIGH	0x400000
+cbw.h:#define BIINITIALIZED       4       /* TRUE or FALSE */
+cbw.h:#define DIINITIALIZED       1       /* TRUE or FALSE */
+cbw.h:#define CIINITIALIZED       1       /* TRUE or FALSE */
+cbw.h:    int EXTCCONV cbC8536Init (int BoardNum, int ChipNum, int Ctr1Output);
+cbw.h:    int EXTCCONV cbC9513Init (int BoardNum, int ChipNum, int FOutDivider, 
+cbw.h:	int EXTCCONV cbPulseOutStart (int BoardNum, int TimerNum, double *Frequency, double *DutyCycle, unsigned int PulseCount, double *InitialDelay, int IdleState, int Options);
+CBW_072605.H:#define BADCHIPNUM         82   /* Invalid chip number used with cbC9513Init */
+CBW_072605.H:#define CTRNOINIT          89   /* Counter was not initialized */
+CBW_072605.H:#define WIN95_CANNOT_SETUP_ISR_DATA   302 /* 32 bit - failure on INIT_ISR_DATA IOCTL call */
+CBW_072605.H:#define WIN31_CANNOT_SETUP_ISR_DATA   303 /* 32 bit - failure on INIT_ISR_DATA IOCTL call */
+CBW_072605.H:#define CANT_INIT_ISR_INFO		332		/* IOCTL call failed on VDD_API_INIT_ISR_INFO */
+CBW_072605.H:#define BIINITIALIZED       4       /* TRUE or FALSE */
+CBW_072605.H:#define DIINITIALIZED       1       /* TRUE or FALSE */
+CBW_072605.H:#define CIINITIALIZED       1       /* TRUE or FALSE */
+CBW_072605.H:    int EXTCCONV cbC8536Init (int BoardNum, int ChipNum, int Ctr1Output);
+CBW_072605.H:    int EXTCCONV cbC9513Init (int BoardNum, int ChipNum, int FOutDivider, 
+CBW_072605.H:    int WINAPI cbC8536Init (int BoardNum, int ChipNum, int Ctr1Output);
+CBW_072605.H:    int WINAPI cbC9513Init (int BoardNum, int ChipNum, int FOutDivider, int FOutSource,
+CBW_072605.H:    short _pascal cbC8536Init (short BoardNum, short ChipNum,short Ctr1Output);
+CBW_072605.H:    short _pascal cbC9513Init (short BoardNum, short ChipNum,short FOutDivider,
+CBW_2006.H:#define BADCHIPNUM         82   /* Invalid chip number used with cbC9513Init */
+CBW_2006.H:#define CTRNOINIT          89   /* Counter was not initialized */
+CBW_2006.H:#define WIN95_CANNOT_SETUP_ISR_DATA   302 /* 32 bit - failure on INIT_ISR_DATA IOCTL call */
+CBW_2006.H:#define WIN31_CANNOT_SETUP_ISR_DATA   303 /* 32 bit - failure on INIT_ISR_DATA IOCTL call */
+CBW_2006.H:#define CANT_INIT_ISR_INFO		332		/* IOCTL call failed on VDD_API_INIT_ISR_INFO */
+CBW_2006.H:#define BIINITIALIZED       4       /* TRUE or FALSE */
+CBW_2006.H:#define DIINITIALIZED       1       /* TRUE or FALSE */
+CBW_2006.H:#define CIINITIALIZED       1       /* TRUE or FALSE */
+CBW_2006.H:    int EXTCCONV cbC8536Init (int BoardNum, int ChipNum, int Ctr1Output);
+CBW_2006.H:    int EXTCCONV cbC9513Init (int BoardNum, int ChipNum, int FOutDivider, 
+CBW_ERR.RC:  CBW_ERR+BADCHIPNUM         "Invalid chip number used with cbC9513Init"
+CBW_ERR.RC:  CBW_ERR+CTRNOINIT          "Counter was not initialized"
+CBW_ERR.RC:  CBW_ERR+WIN95_CANNOT_SETUP_ISR_DATA   "32 bit - failure on INIT_ISR_DATA IOCTL call"
+CBW_ERR.RC:  CBW_ERR+WIN31_CANNOT_SETUP_ISR_DATA   "32 bit - failure on INIT_ISR_DATA IOCTL call"
+CBW_ERR.RC:  CBW_ERR+CANT_INIT_ISR_INFO	"IOCTL call failed on VDD_API_INIT_ISR_INFO"
+CMPN_DLG.CPP:  void InitTabPositions();
+CMPN_DLG.CPP:  InitTabPositions();
+CMPN_DLG.CPP:void ComponentsDlg::InitTabPositions()
+CMPN_DLG.CPP:  InitTabPositions();
+Binary file cmpn_dlg.obj matches
+Binary file cmponent.obj matches
+COMM.CPP:  char cksm = count+1+send_id/*GC_ID*/;		// init checksum
+COMM.CPP:  msg_retry = MAX_RETRY;                // init message retry count
+COMM.CPP:	msg_rx_cksm = b;        // init checksum accumulator
+Daqx.h:/*    Initialization/Error Handling Definitions and Prototypes   */
+Daqx.h:/* Error Code Definitions */
+Daqx.h:   DerrInitFailure      = 0x6d,  /* 109 - Unexpected result occurred while initializing the hardware */
+Daqx.h:/* Handle Type Definition */
+Daqx.h:/* Initialization and Locking Prototypes */
+Daqx.h:/* Error Handler Type Definitions */
+Daqx.h:/*        Event Handling Definitions and Prototypes              */
+Daqx.h:/* Transfer Event Definitions */
+Daqx.h:/* Transfer Event Wait Mode Definitions */
+Daqx.h:/*        Hardware Information Definitions and Prototypes        */
+Daqx.h:// Hardware Information Selector Definitions (daqGetHardwareInfo)
+Daqx.h:/* General Information Selector Definitions */
+Daqx.h:   DdipDaqCalibrationTime      = 50, // Personal Daq initial calibration period in ms 
+Daqx.h:// Detect sensor definitions
+Daqx.h:   DhefFifoCycleMode    = 0x00000002, // FIFO has Cycle ("Finite") Mode
+Daqx.h:/* Hardware Version Definitions */
+Daqx.h:/* Protocol Definitions */
+Daqx.h:/*            Dbk/Wbk Card Definitions and Prototypes                */
+Daqx.h:/* Dbk Card Expansion Bank Definitions and WaveBook option unit */
+Daqx.h:/* and chassis definitions                                      */
+Daqx.h:/* Dbk Card Option Type Selector Definitions */
+Daqx.h:/* Dbk Card and WBK Expansion; Channel and Module Option Type Selector Definitions */
+Daqx.h:   /* Wbk module Option type Definitions */
+Daqx.h:/* Dbk Card and WBK Expansion; Option Value Definitions */
+Daqx.h:        // Digital I/O Port Mode Definitions for All DcotDigitalOptions
+Daqx.h:        // Counter Cascade Option Definitions for DcotCounterCascade    
+Daqx.h:        // Counter Mode Option Definitions for DcotCounterMode
+Daqx.h:        // Counter Edge Option Definitions for DcotCounterEdge
+Daqx.h:        // Counter Control Option Definitions for:
+Daqx.h:        // Timer Control Option Definitions for:
+Daqx.h:   /* Wbk Option Value Definitions */
+Daqx.h:   /* Wbk 12 Filter Type Definitions for DcotWbk12FilterType */
+Daqx.h:   /* Wbk 12 Filter Mode Definitions for DcotWbk12FilterMode */
+Daqx.h:   /* Wbk 12 Anti-Aliasing Filter Mode Definitions for DcotWbk12PreFilterMode */
+Daqx.h:   /* Wbk 12 Anti-Aliasing Filter CutOff Frequency Definitions for DcotWbk12PreFilterCutOff */
+Daqx.h:   /* Wbk 12A Clock Filter CutOff Frequency Definitions for DcotWbk12PostFilterCutOff */
+Daqx.h:   /* Wbk 13 Filter Type Definitions for DcotWbk13FilterType */
+Daqx.h:   /* Wbk 13 Filter Mode Definitions for DcotWbk13FilterMode */
+Daqx.h:   /* Wbk 13 Anti-Aliasing Filter Mode Definitions for DcotWbk13PreFilterMode */
+Daqx.h:   /* Wbk 13 Anti-Aliasing Filter CutOff Frequency Definitions for DcotWbk13PreFilterCutOff */
+Daqx.h:   /* Wbk 13A Clock Filter CutOff Frequency Definitions for DcotWbk13PostFilterCutOff */
+Daqx.h:   /* Wbk 14 Current Source Definitions for DcotWbk14CurrentSrc */
+Daqx.h:   /* Wbk 14 High Pass Filter Definitions for DcotWbk14HighPassCutOff */
+Daqx.h:   /* Wbk 14 Low Pass Filter Mode Definitions for DcotWbk14LowPassMode */
+Daqx.h:   /* Wbk 14 Low Pass Filter Mode Definitions for DcotWbk14PreFilterMode */
+Daqx.h:   /*Wbk14 External (Order Tracking) Filter Frequency Range Definitions*/
+Daqx.h:   /* Wbk 14 Excitation Source Waveform Definitions for WmotWbk14ExcSrcWaveform */
+Daqx.h:   // Wbk16 Bridge Definitions
+Daqx.h:   // Wbk16 Shunt resistors cal definitions
+Daqx.h:   // Wbk16 Input Diagnostics definitions
+Daqx.h:   // Wbk16 Output Source definitions
+Daqx.h:   // Wbk16 SSH definitions
+Daqx.h:   // Wbk16 Inversion definitions
+Daqx.h:   // WbK16 Filter Type Definitions
+Daqx.h:   // Wbk16 Coupling Definitions
+Daqx.h:   // Wbk16 Instrumentation Amplifier w/Gain Definitions
+Daqx.h:   // Wbk16 Programmable Gain Amplifier Definitions
+Daqx.h:   // Wbk16 Immediate Function Definitions
+Daqx.h:   // Wbk17 Input Coupling Definitions   
+Daqx.h:   // WbK17 Filter Type Definitions
+Daqx.h:/*                 ADC Definitions and Prototypes                */
+Daqx.h:/* ADC Gain Definitions */
+Daqx.h:/* ADC Flag Definitions */
+Daqx.h:/* Channel Type Definitions for Trigger Calculations*/
+Daqx.h:/* ADC Trigger Source Definitions */
+Daqx.h:/* Enhanced Trigger Sense Definitions */
+Daqx.h:/* ADC Clock Source Definitions */
+Daqx.h:/* ADC Acquisition Mode Definitions */
+Daqx.h:   DaamInfinitePost     = 2,
+Daqx.h:/* ADC File Open Mode Definitions */
+Daqx.h:/* ADC Transfer Mask Definitions */
+Daqx.h:/* ADC Acquisition/Transfer Active Flag Definitions */
+Daqx.h:/*                 DAC Definitions and Prototypes                */
+Daqx.h:/* DAC Device Type Definitions */
+Daqx.h:/* DAC Output Mode Definitions */
+Daqx.h:/* DAC Trigger Source Definitions */
+Daqx.h:/* DAC Clock Source Definitions */
+Daqx.h:/* DAC Waveform Mode Definitions */
+Daqx.h:   DdwmInfinite         = 2,
+Daqx.h:/* DAC Predefined Waveform Type Definitions */
+Daqx.h:/* DAC Transfer Mask Definitions */
+Daqx.h:/* DAC Waveform/Transfer Active Flag Definitions */
+Daqx.h:/*          Data Conversion Definitions and Prototypes           */
+Daqx.h:/* Software Calibration Type Definitions */
+Daqx.h:/* Zero Compensation Definitions */
+Daqx.h:/* RTD Type Definitions */
+Daqx.h:/* Thermocouple Type Definitions */
+Daqx.h:/*            General I/O Definitions and Prototypes             */
+Daqx.h:/* I/O Device Type Definitions */
+Daqx.h:/* I/O Port Type Definitions */
+Daqx.h:/* I/O Expansion Port Code Definitions */
+Daqx.h:/*         9513 Counter/Timer Definitions and Prototypes         */
+Daqx.h:/* 9513 Time-of-Day Definitions */
+Daqx.h:/* 9513 Gating Control Definitions */
+Daqx.h:/* 9513 Count Source Definitions */
+Daqx.h:/* 9513 Output Control Definitions */
+Daqx.h:/* 9513 Multiple Counter Command Definitions */
+Daqx.h:/*  Communications test/performance Definitions and Prototypes   */
+Daqx.h:/* DaqTest Command Definitions */
+Daqx.h:/*  Register level IO Definitions and Prototypes                 */
+Daqx.h:/*  Obsolete, Internal Usage and Beta Definitions and Prototypes */
+Daqx.h:/* I/O Operation Code Definitions */
+Daqx.h:/* I/O Operation Code Definitions */
+Daqx.h:/* I/O Transfer Mask Definitions */
+Daqx.h:/* I/O Transfer Active Flag Definitions */
+Binary file det_dlg.obj matches
+DETECTOR.BAK:  int flags=0; // Initially is Unknown
+DETECTOR.BAK:void InitTotalList()
+DETECTOR.BAK:void InitTWA()
+DETECTOR.BAK:  TWA_cycle_start_time = GetTime(); // store last init time
+DETECTOR.BAK:  InitTotalList();
+DETECTOR.BAK:void InitSTEL()
+DETECTOR.BAK:// end of added init. P.P. 12/26/04
+DETECTOR.BAK://  int Port_DAC_total = BASE1 + 2; // initialize. P.P. 11/10/02 - does not change from this value. Why?
+DETECTOR.BAK://  int Port_DAC_total = BASE1 + 2; // initialize. P.P. 11/09/02
+DETECTOR.BAK:  float concen_DAC_total = 0; // initialize. P.P. 11/09/02
+DETECTOR.BAK:  float concen_DAC_total = 0; // initialize. P.P. 
+DETECTOR.BAK:// Initialization of DACs. P.P. 21/22/01
+DETECTOR.BAK:void InitDAC() // the function changed to initialize DAC of DDA board. P.P. 03/26/03
+DETECTOR.BAK:/// added to initialize analog outputs to zero. P.P. 03/26/03
+DETECTOR.CPP:  int flags=0; // Initially is Unknown
+DETECTOR.CPP:void InitTotalList()
+DETECTOR.CPP:void InitTWA()
+DETECTOR.CPP:  TWA_cycle_start_time = GetTime(); // store last init time
+DETECTOR.CPP:  InitTotalList();
+DETECTOR.CPP:void InitSTEL()
+DETECTOR.CPP:// end of added init. P.P. 12/26/04
+DETECTOR.CPP:  float concen_DAC_total = 0; // initialize. P.P. 
+DETECTOR.CPP:// Initialization of DACs. P.P. 21/22/01
+DETECTOR.CPP:void InitDAC() // the function changed to initialize DAC of DDA board. P.P. 03/26/03
+DETECTOR.CPP:/// added to initialize analog outputs to zero. P.P. 03/26/03
+DETECTOR.H:  int gain;		// initial gain for GC 311
+Binary file detector.obj matches
+DRAW.CPP://  int start_gain = pDetector->gain;  // initiate. P.P. 12/28/12
+DRAW.CPP://  start_autoscale[2] = {(long) pow10(2),(long) pow10(2)]};  // declare and initialize. P.P. 05/14/17
+Binary file draw.obj matches
+FRAME.CPP:void FrameWindow::InitClientWindow()
+FRAME.CPP:  Inherited::InitClientWindow();
+FRAME.CPP:void FrameWindow::WMInitMenuPopup(RTMessage Msg)
+FRAME.H:  virtual void InitClientWindow();
+FRAME.H:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+Binary file frame.obj matches
+GRPH_WND.CPP:GraphWindow::GraphWindow(StreamableInit)
+GRPH_WND.CPP: : TWindow(streamableInit)
+GRPH_WND.CPP:  return new GraphWindow(streamableInit);
+GRPH_WND.CPP:  cf.Flags = CF_SCREENFONTS | CF_EFFECTS | CF_INITTOLOGFONTSTRUCT | CF_PRINTERFONTS;
+GRPH_WND.CPP:void GraphWindow::WMInitMenuPopup(RTMessage Msg)
+GRPH_WND.CPP:RunGraphWindow::RunGraphWindow(StreamableInit)
+GRPH_WND.CPP: : TWindow(streamableInit)
+GRPH_WND.CPP:  return new RunGraphWindow(streamableInit);
+GRPH_WND.CPP:  cf.Flags = CF_SCREENFONTS | CF_EFFECTS | CF_INITTOLOGFONTSTRUCT | CF_PRINTERFONTS;
+GRPH_WND.CPP:void RunGraphWindow::WMInitMenuPopup(RTMessage Msg)
+Binary file grph_wnd.obj matches
+GRPHWIND.H:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+GRPHWIND.H:  GraphWindow(StreamableInit);
+GRPHWIND.H:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+GRPHWIND.H:  RunGraphWindow(StreamableInit);
+HELP.DOC:\par }\pard \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\insrsid13787376    1. Set the oven temperature as the initial temperature
+HELP.DOC:\par    2. Fill in the initial }{\b\insrsid13787376 Hold Time 1}{\insrsid13787376 .
+HELP.DOC:\par }\pard \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\insrsid13787376    \tab 1. Set the oven temperature as the initial temperature
+HELP.DOC:\par    \tab 2. Fill in the initial }{\b\insrsid13787376 Hold Time 1}{\insrsid13787376 .
+HELP.DOC:es not set the process parameters to the GC. However, it can control the mode of data acquisition and initiate the GC to start a run. Fill in edit boxes and check boxes for the following parameters:
+HELP.rtf:\par }\pard \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\insrsid13787376    1. Set the oven temperature as the initial temperature
+HELP.rtf:\par    2. Fill in the initial }{\b\insrsid13787376 Hold Time 1}{\insrsid13787376 .
+HELP.rtf:\par }\pard \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\insrsid13787376    \tab 1. Set the oven temperature as the initial temperature
+HELP.rtf:\par    \tab 2. Fill in the initial }{\b\insrsid13787376 Hold Time 1}{\insrsid13787376 .
+HELP.rtf: set the process parameters to the GC. However, it can control the mode of data acquisition and initiate the GC to start a run. Fill in edit boxes and check boxes for the following parameters:
+HELP_020609.RTF:\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {   1. Set the oven temperature as the initial temperature
+HELP_020609.RTF:\par    2. Fill in the initial }{\b Hold Time 1}{.
+HELP_020609.RTF:\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {   \tab 1. Set the oven temperature as the initial temperature
+HELP_020609.RTF:\par    \tab 2. Fill in the initial }{\b Hold Time 1}{.
+HELP_020609.RTF:t set the process parameters to the GC. However, it can control the mode of data acquisition and initiate the GC to start a run. Fill in edit boxes and check boxes for the following parameters:
+HELP_041006.RTF:\insrsid7345968\charrsid7345968  the initial temperature
+HELP_041006.RTF:\par }{\insrsid7345968    }{\insrsid7345968\charrsid7345968 2. Fill in the initial }{\b\insrsid7345968 H}{\b\insrsid7345968\charrsid7345968 old }{\b\insrsid7345968 T}{\b\insrsid7345968\charrsid7345968 ime}{\b\insrsid7345968  1}{\insrsid7345968 .}{
+HELP_041006.RTF:tograph and does not set the process parameters to the GC. However, it can control the mode of data acquisition and initiate the GC to start a run. Fill in edit boxes and check boxes for the following parameters:
+HELP_112808.RTF:\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {   1. Set the oven temperature as the initial temperature
+HELP_112808.RTF:\par    2. Fill in the initial }{\b Hold Time 1}{.
+HELP_112808.RTF:\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {   \tab 1. Set the oven temperature as the initial temperature
+HELP_112808.RTF:\par    \tab 2. Fill in the initial }{\b Hold Time 1}{.
+HELP_112808.RTF: displays data from the gas chromatograph and does not set the process parameters to the GC. However, it can control the mode of data acquisition and initiate the GC to start a run. Fill in edit boxes and check boxes for the following parameters:
+HELP_312.RTF:\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {   1. Set the oven temperature as the initial temperature
+HELP_312.RTF:\par    2. Fill in the initial }{\b Hold Time 1}{.
+HELP_312.RTF:processes, and displays data from the gas chromatograph and does not set the process parameters to the GC. However, it can control the mode of data acquisition and initiate the GC to start a run. Fill in edit boxes and check boxes for the following parame
+Binary file help_dlg.obj matches
+Binary file job.obj matches
+Binary file l_dlg.obj matches
+L_WND.CPP:ListWindow::ListWindow(StreamableInit)
+L_WND.CPP: : TWindow(streamableInit), list(0)
+L_WND.CPP:void ListWindow::WMInitMenuPopup(RTMessage Msg)
+L_WND.H:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+L_WND.H:  ListWindow(StreamableInit);
+MAIN_WND.BAK:  if(!InitInternal()) {     // cond added to exit if the USB_1608FS board # is wrong. P.P. 01/01/07
+MAIN_WND.BAK://  InitInternal(); // I think all initailization we must do on begin acquire W.K.
+MAIN_WND.BAK://  int check = InitInternal();  // rem P.P. 03/29/18 to test
+MAIN_WND.BAK:void MainWindow::WMInitMenuPopup(RTMessage Msg)
+MAIN_WND.BAK:  Inherited::WMInitMenuPopup(Msg);
+MAIN_WND.CPP:  if(!InitInternal()) {     // cond added to exit if the USB_1608FS board # is wrong. P.P. 01/01/07
+MAIN_WND.CPP://  InitInternal(); // I think all initailization we must do on begin acquire W.K.
+MAIN_WND.CPP://  int check = InitInternal();  // rem P.P. 03/29/18 to test
+MAIN_WND.CPP:void MainWindow::WMInitMenuPopup(RTMessage Msg)
+MAIN_WND.CPP:  Inherited::WMInitMenuPopup(Msg);
+Binary file main_wnd.obj matches
+MAINWIND.BAK:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+MAINWIND.H:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+Binary file meth_dlg.obj matches
+METH_FUN.BAK:    ofn.lpstrInitialDir = NULL; //szDirName;
+METH_FUN.BAK:  InitTWA();
+METH_FUN.BAK:  InitTWA(); //??
+METH_FUN.BAK:    case WM_INITDIALOG:
+METH_FUN.CPP:    ofn.lpstrInitialDir = NULL; //szDirName;
+METH_FUN.CPP:  InitTWA();
+METH_FUN.CPP:  InitTWA(); //??
+METH_FUN.CPP:    case WM_INITDIALOG:
+Binary file meth_fun.obj matches
+Binary file method.obj matches
+MODBUS.CPP:  uint8 cksm = address+func+count;		// init checksum
+Binary file modbus.obj matches
+Binary file my45xdll.obj matches
+Binary file mycbw.obj matches
+Binary file opts_dlg.obj matches
+OUTP_WND.CPP:OutputWindow::OutputWindow(StreamableInit)
+OUTP_WND.CPP: : TBWindow(streamableInit), Editor(0)
+OUTP_WND.CPP:  return new OutputWindow(streamableInit);
+OUTP_WND.CPP:  cf.Flags = CF_SCREENFONTS | CF_EFFECTS | CF_INITTOLOGFONTSTRUCT | CF_PRINTERFONTS;
+OUTP_WND.CPP:void OutputWindow::WMInitMenuPopup(RTMessage Msg)
+Binary file outp_wnd.obj matches
+OUTPWIND.H:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+OUTPWIND.H:  OutputWindow(StreamableInit);
+Binary file oz.obj matches
+PEAK_APP.CPP:void PeakApp::InitMainWindow()
+PEAK_APP.CPP:    case WM_INITDIALOG:
+PEAK_APP.H:  virtual void InitMainWindow();
+Binary file peak_app.obj matches
+PEAK_WND.CPP:  void InitTabPositions();
+PEAK_WND.CPP:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+PEAK_WND.CPP:  PeakWindow(StreamableInit);
+PEAK_WND.CPP:PeakWindow::PeakWindow(StreamableInit)
+PEAK_WND.CPP: : TWindow(streamableInit), list(0)
+PEAK_WND.CPP:  return new PeakWindow(streamableInit);
+PEAK_WND.CPP:void PeakWindow::InitTabPositions()
+PEAK_WND.CPP:  InitTabPositions();
+PEAK_WND.CPP:void PeakWindow::WMInitMenuPopup(RTMessage Msg)
+Binary file peak_wnd.obj matches
+Binary file peaklist.obj matches
+Binary file pref.obj matches
+Binary file pref_dlg.obj matches
+Binary file QA.gc323.MAYBE.QA.bradshaw.051520.QA.EXE matches
+RAW_DATA.CPP:  raw_data.time = 0;         // initialize retention time
+Binary file raw_data.obj matches
+Binary file report.obj matches
+Binary file run.obj matches
+RUNL_BOX.CPP:RunListBox::RunListBox(StreamableInit)
+RUNL_BOX.CPP: : TListBox(streamableInit)
+RUNL_BOX.CPP:  return new RunListBox(streamableInit);
+Binary file runl_box.obj matches
+Binary file runl_dlg.obj matches
+Binary file runl_prn.obj matches
+RUNL_WND.CPP:  RunListBox(StreamableInit);
+RUNL_WND.CPP:RunListBox::RunListBox(StreamableInit)
+RUNL_WND.CPP: : TListBox(streamableInit)
+RUNL_WND.CPP:  return new RunListBox(streamableInit);
+RUNL_WND.CPP:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+RUNL_WND.CPP:  RunListWindow(StreamableInit);
+RUNL_WND.CPP:RunListWindow::RunListWindow(StreamableInit)
+RUNL_WND.CPP: : TBWindow(streamableInit), list(0), xZ(0), x0(0),x1(0),x2(0),x3(0),x4(0)
+RUNL_WND.CPP:  return new RunListWindow(streamableInit);
+RUNL_WND.CPP:void RunListWindow::WMInitMenuPopup(RTMessage Msg)
+RUNLBOX.H:  RunListBox(StreamableInit);
+Binary file runlist.obj matches
+SeaIo32.h:// Call GetOverlappedResult() to initiate blocking and wait for data.
+SeaIo32.h:// Initiate sampling operation for devices which support interrupts.
+Binary file sgfilter.obj matches
+STND_DLG.CPP:  void InitTabPositions();
+STND_DLG.CPP:  InitTabPositions();
+STND_DLG.CPP:void StandardsDlg::InitTabPositions()
+STND_DLG.CPP:  InitTabPositions();
+Binary file stnd_dlg.obj matches
+SUMM_PRN.CPP:  InitTabPositions(*pdc);
+SUMM_PRN.CPP:void SummaryPrintout::InitTabPositions(DC &dc)
+SUMM_PRN.CPP:TRACE("SummaryPrintout::InitTabPositions");
+SUMM_PRN.H:  void InitTabPositions(DC &dc);
+Binary file summ_prn.obj matches
+SUMM_WND.CPP:  void InitTabPositions(DC &dc);
+SUMM_WND.CPP:  virtual void WMInitMenuPopup(RTMessage) = [WM_FIRST + WM_INITMENUPOPUP];
+SUMM_WND.CPP:  SummaryWindow(StreamableInit);
+SUMM_WND.CPP:SummaryWindow::SummaryWindow(StreamableInit)
+SUMM_WND.CPP: : TWindow(streamableInit), list(0)
+SUMM_WND.CPP:  return new SummaryWindow(streamableInit);
+SUMM_WND.CPP:void SummaryWindow::InitTabPositions(DC &dc)
+SUMM_WND.CPP:  InitTabPositions(dc);
+SUMM_WND.CPP:void SummaryWindow::WMInitMenuPopup(RTMessage Msg)
+Binary file summ_wnd.obj matches
+TCTRL.CPP: , mode(T_INIT)
+TCTRL.CPP:    mode=T_INIT; // must be already in T_INIT
+TCTRL.CPP:    case T_INIT:
+TCTRL.CPP:    case T_INIT:
+TCTRL.CPP:      mode = T_INIT;
+TCTRL.H:    T_INIT  = 0,
+Binary file tctrl.obj matches
+Binary file td_plus.obj matches
+Binary file tot_prn.obj matches
+Binary file utl.obj matches
+Binary file wcomm.obj matches
+Binary file wmain.obj matches
+Binary file wow.obj matches
+Binary file WPEAK.EXE matches
+Binary file WPEAK.HLP matches
+Binary file wpeak.res matches
+Binary file wpeak.sym matches
+WPEAKC.CPP:  virtual void WMInitMenuPopup(RTMessage Msg) = [WM_FIRST + WM_INITMENUPOPUP];
+WPEAKC.CPP:    ofn.lpstrInitialDir = NULL; //szDirName;
+WPEAKC.CPP:void TMyDialog::WMInitMenuPopup(RTMessage msg)
+WPEAKC.CPP:  virtual void InitMainWindow();
+WPEAKC.CPP:void TMyApp::InitMainWindow()
+WpeakVC.rc:    12082                   "Invalid chip number used with cbC9513Init"
+WpeakVC.rc:    12089                   "Counter was not initialized"
+WpeakVC.rc:    12302                   "32 bit - failure on INIT_ISR_DATA IOCTL call"
+WpeakVC.rc:    12303                   "32 bit - failure on INIT_ISR_DATA IOCTL call"
+WpeakVC.rc:    12332                   "IOCTL call failed on VDD_API_INIT_ISR_INFO"

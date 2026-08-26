@@ -1,0 +1,86 @@
+Acquire::SendEndAcquire()
+  TRACE1("Acquire::SendEndAcquire =%p", this);
+void Acquire::Inject(BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL_16.
+void Acquire::HydrogenValve(BOOL on) // P.P. 06/28/05 
+void Acquire::Makeup(BOOL on) 
+void Acquire::X1_valve(BOOL on)
+void Acquire::X2_valve(BOOL on)
+void Acquire::X3_valve(BOOL on)
+void Acquire::X4_valve(BOOL on)
+void Acquire::X5_valve(BOOL on)   // added P.P. 07/01/10
+void Acquire::ZeroGasValve(BOOL on)   // added P.P. 03/17/11
+void Acquire::SetFlowMode(int flow_mode)
+void Acquire::SamplePump(BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL_16.
+void Acquire::Concentrator(BOOL on)  // since now it will serves to enable desorber heater. P.P. 01/02/10
+void Acquire::Purge(BOOL on)
+void Acquire::Fan(BOOL on)      // note: fan can use dsb_fan_bit_number, leaving fan_bit_number for oven door. P.P. 08/31/18
+void Acquire::TCDDetector(BOOL on)
+  TRACE1( "Acquire::TCDDetector(%d)", on );
+void Acquire::EnableOven(BOOL on)
+void Acquire::FlameDetector(BOOL on)
+  TRACE1( "Acquire::FlameDetector(%d)", on );
+void Acquire::Equilibrate(BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL_16.
+  TRACE1( "Acquire::Equilibrate(%d)", on );
+void Acquire::Alarm(BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL_16.
+void Acquire::Filter_valve(BOOL on)
+void Acquire::Low_Alarm(int pointnumber, BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL_16.
+  //pMainWindow->print("Acquire::Low_Alarm(%d,%d)", pointnumber, on);
+void Acquire::High_Alarm(int pointnumber, BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL_16. Not done ywt for CBWUSB_IO() case. P.P. 03/13/18
+  //pMainWindow->print("Acquire::High_Alarm(%d,%d)", pointnumber, on);
+void Acquire::Diagnostics_Alarm(int diagn_bit_number, BOOL on)
+void Acquire::Lamp(BOOL on)
+    TRACE1("Acquire::Lamp =%d", on);
+//    pMainWindow->print("Acquire::Lamp =%d\r\n", on); // removed. P.P. 06/24/06
+void Acquire::LampB(BOOL on)  // modified from Lamp() but only in case of DDA, REL16, and HV_501, to simplify. P.P. 12/31/02
+  TRACE1( "Acquire::LampB(%d)", on );
+    TRACE1("Acquire::Lamp =%d", on);
+//    pMainWindow->print("Acquire::Lamp =%d\r\n", on); // removed. P.P. 06/24/06
+void Acquire::SetLamps(BOOL bOn)
+  TRACE1( "Acquire::SetLamps(%d)", bOn );
+void Acquire::AutoZero(BOOL on) // P.P. modified 06/07/03 to work with DAQ + REL_16.
+  TRACE1( "Acquire::AutoZero(%d)", on );
+void Acquire::AutoZeroB(BOOL on) 
+  TRACE1( "Acquire::AutoZeroB(%d)", on );
+void Acquire::PointNumber(int Pointnumber)
+  TRACE1("Acquire::PointNumber =%d", Pointnumber);                 // changed. P.P. 05/01/04
+  pMainWindow->print("Acquire::PointNumber =%d\r\n", Pointnumber); //
+void Acquire::WaterPump(int water_pump_number, BOOL on)
+//void Acquire::OvenDoor(BOOL on)     // Made simple way: P.P. 08/09/02. Modified 06/07/03 to work with DAQ + REL_16.
+void Acquire::OvenDoor(BOOL on)     //Changed: P.P. 06/18/06. 
+void Acquire::DoorMotor(BOOL on)     // P.P. 10/04/11.
+void Acquire::SecondPump(BOOL on)     // new function. P.P. 08/03/18.
+Acquire::Acquire(Comm *_pComm, int _acquire_type, int /*acq_mode*/, int _nStandard, Method *_pMethod, PeakList **_pPeakList, Run *_pRun, Job *_pJob, int _pointnumber, MainWindow *_pMainWindow)
+  TRACE1("Acquire::Acquire =%p", this);
+Acquire::~Acquire()
+  TRACE1("Acquire::~Acquire =%p", this);
+  TRACE1("Acquire::~Acquire end=%p", this);
+int Acquire::CheckCalibration()
+void Acquire::CheckLamp(long curr_rt)
+void Acquire::Start()
+void Acquire::StartAcquire()
+void Acquire::StartMethTrans()
+int Acquire::Continue()
+    //TRACE("Acquire::Continue() already_in");
+          Acquire::TCDDetector(FALSE);    // Turn ON manually after this. P.P. 06/15/04
+         // all initialization in Acquire::Start
+//	    Acquire::FlameDetector(FALSE);
+//	    Acquire::HydrogenValve(FALSE);
+        Acquire::TCDDetector(FALSE);    // Turn ON manually after this. P.P. 06/15/04
+            Acquire::TCDDetector(FALSE);    // Turn ON manually after this. P.P. 06/15/04
+    TRACE1("Acquire::Continue() return retVal=%d",retVal);
+  TRACE("Acquire::Continue() end");
+void Acquire::WriteRawData(uint32 *raw_data, int len)
+//  Acquire::Check_Temp_Safety(); // 04/20/09
+    Acquire::TCDDetector(FALSE);    // Turn ON manually after this. P.P. 05/10/04
+      Acquire::FlameDetector(FALSE);
+	Acquire::HydrogenValve(FALSE); // close valve if failed to ignite
+        Acquire::Diagnostics_Alarm(diagnostics_bit_number, TRUE); // alarm if failed ignite. ?: may be Local Alarm? P.P. 09/24/05
+      Acquire::HydrogenValve(FALSE); // close valve if flame OFF
+      Acquire::Diagnostics_Alarm(diagnostics_bit_number, TRUE); // alarm if failed ignite. ?: m.b. Local Alarm? P.P. 09/24/05
+      Acquire::OvenDoor(FALSE);   //
+        Acquire::DoorMotor(TRUE); // P.P. 10/04/11
+      Acquire::OvenDoor(TRUE);
+        Acquire::DoorMotor(TRUE); // P.P. 10/06/11
+        Acquire::DoorMotor(FALSE);
+  Acquire::TCDDetector(on);           // TCD is ON on start of Wpeak, off on exit.
+//    Acquire::SetLamps(FALSE); // added. P.P. 06/21/06
