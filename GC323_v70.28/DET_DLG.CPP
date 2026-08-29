@@ -60,6 +60,7 @@ static ControlInfo far DetectorControlInfo[]={
   { citONOFF,	IDD_INVERT,    		FIELDOFFSET(Detector,invert),		},   // P.P. 03/25/09
   { citRadio,   IDD_ALL_PEAKS,         	FIELDOFFSET(Detector,known_peaks),	3	}, // 0-all, 1-known peaks only. P.P. 09/17/05
   { citONOFF,   IDD_DATA_EXCEL, 	FIELDOFFSET(Detector,data_to_excel)		}, // P.P. 02/24/12
+  { citONOFF,   IDD_NEG_PEAKS,  	FIELDOFFSET(Detector,neg_peaks)			}, // JW 08/28/26
   { citComboList, IDD_RANGE_1, 		FIELDOFFSET(Detector,gain_1), (LPARAM)"1\00010\000100\0001000\000"  		},
 //  { citComboList, IDD_RANGE_1, 		FIELDOFFSET(Detector,gain_1), (LPARAM)"1\00010\000100\000"		}, // up to 100. P.P. 05/05/17
 

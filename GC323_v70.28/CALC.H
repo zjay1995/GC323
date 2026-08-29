@@ -205,6 +205,9 @@ class Integrator: public RawData {
   double next_peak_area;
 
   BOOL peak_rising;
+  int peak_polarity;   // +1 normal peak, -1 negative peak. Only ever -1 while
+                       // pDetector->neg_peaks is on, so with that option off every
+                       // peak_polarity* term reduces to the original test. JW 08/28/26
 
   int analyze_segment;
   //int peakX, peakY;

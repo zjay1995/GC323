@@ -35,6 +35,7 @@ Detector::Detector()
   , ext_det(0)     // P.P. 11/14/08
   , invert(0)     // P.P. 03/25/09, here 11/06/09
   , data_to_excel(0)  // P.P. 02/24/12
+  , neg_peaks(0)      // off by default - positive peaks only, as before. JW 08/28/26
   {
 // added 07/27/07
   for(int i=0; i<COMPONENT_ROWS; i++) {
@@ -110,6 +111,9 @@ void *Detector::read(iwstream &is, unsigned long version)
     is>>gain_1;
     auto_gain_on_off=0; // added, to exclude and disable this option. P.P. 10/17/14
   }
+  if(version>=45) {  // Include Negative Peaks - appended last so older layouts are unchanged. JW 08/28/26
+    is>>neg_peaks;
+  }
   for(int i=0; i<COMPONENT_ROWS; i++) {
     components[i].read(is, version);
   }
@@ -145,6 +149,7 @@ void Detector::write(owstream &os)
   os<<invert;  // P.P. 03/25/09, here 11/06/09
   os<<data_to_excel; // P.P. 02/24/12
   os<<gain_1; // P.P. 11/09/12
+  os<<neg_peaks; // JW 08/28/26 - must stay last, matching read()
 //  for(int i=0; i<COMPONENT_ROWS; i++) {
   for(i=0; i<COMPONENT_ROWS; i++) {   // 07/27/07
     components[i].write(os);
@@ -525,7 +530,9 @@ void TWA_calc(Method *pMethod, Run *pRun, PeakList **pPeakList, int pointnumber)
       }
       //concentration[n][i]=concen; // Store for write to DAC later
       float concen_DAC = concen; // added. P.P. 10/06/02
-      concen_total[n] += concen; // Store for write to DAC later
+      // With Include Negative Peaks on, add the magnitude so a negative peak does not
+      // cancel positive ones in the total sent to the DAC. JW 08/28/26
+      concen_total[n] += (pDetector->neg_peaks && concen < 0) ? -concen : concen; // Store for write to DAC later
       concen_point[pointnumber][n][i] = concen; // P.P. 12/24/02. Added to refresh concen in all points.
       flags_point[pointnumber][n][i] = flags;
       time_point[pointnumber][n][i] = time;

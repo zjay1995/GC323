@@ -201,6 +201,7 @@ Integrator::Integrator(Method *_pMethod, Detector *_pDetector, Run *_pRun,
 
          time_peak_ends       (0l),
          peak_rising          (FALSE),
+         peak_polarity        (1),   // positive until a negative peak starts. JW 08/28/26
          next_peak_area       (0.0),
          next_start_of_peak   (0l),
          skim_starting_point  (0),
@@ -506,10 +507,27 @@ void Integrator::BetweenPeaks( void )
                 ((scaled_sample - prev_scaled_sample) > noise) ) { // restored for full noise. P.P. 11/05/10
 //      ((scaled_sample - prev_scaled_sample) > half_noise) ) {  // replaced. P.P. 02/24/04
             // Initialize start of peak by Trap. rule.
+            peak_polarity = 1;                 // positive peak. JW 08/28/26
             peak_area = height * dq.segment_width;
 #if 0    /* UNUSED CODE  -  BDF  -  08/28/92   11:36 */
             peak_area = height / 2;
 #endif
+            skim_starting_point = raw_sample;
+            peak.From=
+            start_of_peak = raw_data.time;
+
+            analyze_segment = PEAK_STARTING;    // next state
+        }
+// Negative peak start - the mirror of the test above: the signal is below the
+// baseline by more than the noise AND still falling. height is negative here, so
+// peak_area accumulates negative values and the peak carries a negative Area and
+// Height all the way through. Gated on the Detector "Include Negative Peaks"
+// checkbox - with it off peak_polarity can never become -1. JW 08/28/26
+        else if( pDetector->neg_peaks &&
+                 (-height > noise) &&
+                 ((prev_scaled_sample - scaled_sample) > noise) ) {
+            peak_polarity = -1;                // negative peak
+            peak_area = height * dq.segment_width; // height < 0 -> peak_area < 0
             skim_starting_point = raw_sample;
             peak.From=
             start_of_peak = raw_data.time;
@@ -546,14 +564,16 @@ void Integrator::BetweenPeaks( void )
                 half_noise = 1L;            //
 
             if( /*(height > 0) &&*/
-                    (height > noise || pDetector->peak_alg==1) &&
-                    ((scaled_sample - prev_scaled_sample) > noise) ) { // hmmm??? // restored for full noise. P.P. 11/05/10
+                    (peak_polarity*height > noise || pDetector->peak_alg==1) &&
+                    (peak_polarity*(scaled_sample - prev_scaled_sample) > noise) ) { // hmmm??? // restored for full noise. P.P. 11/05/10
 //      ((scaled_sample - prev_scaled_sample) > half_noise) ) { // replaced. P.P. 02/24/04
                 peak_area += height * dq.segment_width;
                 analyze_segment = PEAK_STILL_STARTING;      // next state
             }
-            else
+            else {
+                peak_polarity = 1;              // reset for the next detection. JW 08/28/26
                 analyze_segment = BETWEEN_PEAKS;    // next state
+            }
         }
 
 
@@ -565,14 +585,16 @@ void Integrator::BetweenPeaks( void )
                 half_noise = 1L;            //
 
             if( /*(height > 0) &&*/
-                    (height > noise || pDetector->peak_alg==1) &&
-                    ((scaled_sample - prev_scaled_sample) > noise) ) { // hmmm??? // restored for full noise. P.P. 11/05/10
+                    (peak_polarity*height > noise || pDetector->peak_alg==1) &&
+                    (peak_polarity*(scaled_sample - prev_scaled_sample) > noise) ) { // hmmm??? // restored for full noise. P.P. 11/05/10
 //      ((scaled_sample - prev_scaled_sample) > half_noise) ) { // replaced. P.P. 02/24/04
                 peak_area += height * dq.segment_width;
                 analyze_segment = PEAK_RISING;      // next state
             }
-            else
+            else {
+                peak_polarity = 1;              // reset for the next detection. JW 08/28/26
                 analyze_segment = BETWEEN_PEAKS;    // next state
+            }
         }
 
 
@@ -588,7 +610,8 @@ void Integrator::BetweenPeaks( void )
                 half_noise = 1L;
 //  if((prev_scaled_sample - scaled_sample) > half_noise) { // if now descending,...
             //   End. P.P. 11/13/01
-            if((prev_scaled_sample - scaled_sample) > noise) { // if now descending,... // restored for full noise. P.P. 11/05/10
+            // For a negative peak the apex is a trough, so the turn is upward. JW 08/28/26
+            if(peak_polarity*(prev_scaled_sample - scaled_sample) > noise) { // if now past apex,... // restored for full noise. P.P. 11/05/10
                 //   Set temporary Peak Height, Total Height and actual Retention
                 //   Time and establish Peak Width and Cutoff time.
                 peak.Time = raw_data.time;
@@ -625,7 +648,7 @@ void Integrator::BetweenPeaks( void )
                 half_noise = 1L;
 //  if((prev_scaled_sample - scaled_sample) > half_noise) { // if now descending,...
             // End. P.P. 11/13/01
-            if((prev_scaled_sample - scaled_sample) > noise) {  // if still descending,... // restored for full noise. P.P. 11/05/10
+            if(peak_polarity*(prev_scaled_sample - scaled_sample) > noise) {  // if still moving away from baseline,... // restored for full noise. P.P. 11/05/10  JW 08/28/26
                 prev_retention_time = raw_data.time;        // to enter segment six.
                 analyze_segment = STILL_DESCENDING;         // next state
             }
@@ -639,10 +662,10 @@ void Integrator::BetweenPeaks( void )
         {
             long height = scaled_sample - act_thresh;
 
-            // Has another Peak started?
+            // Has another Peak started, in the SAME direction as the current one? JW 08/28/26
             if( /*(height > 0) &&*/
-                    (height > noise || pDetector->peak_alg==1) &&
-                    ((scaled_sample - prev_scaled_sample) > noise) ) {// if new peak ascending,...
+                    (peak_polarity*height > noise || pDetector->peak_alg==1) &&
+                    (peak_polarity*(scaled_sample - prev_scaled_sample) > noise) ) {// if new peak moving away from baseline,...
                 // Initialize start of peak by Trap. rule.
                 next_peak_area = height * dq.segment_width;
 #if 0    /* UNUSED CODE  -  BDF  -  08/28/92   11:47 */
@@ -662,7 +685,8 @@ void Integrator::BetweenPeaks( void )
             // Has the signal sunk below the Baseline?
             // Or is it cutoff time?
 //  if( (height <= 0) ||    // exclude case of tangent skimming, let signal be allowed to go below baseline. P.P. 07/03/17
-            if( ((height <= 0)&& (!(pDetector->peak_alg==1))) ||
+            // For a negative peak "back at baseline" means height has risen to 0. JW 08/28/26
+            if( ((peak_polarity*height <= 0)&& (!(pDetector->peak_alg==1))) ||
                 #if /*0*/ 1
                 (raw_data.time > end_of_peak ) ) {
 #else
@@ -676,6 +700,28 @@ void Integrator::BetweenPeaks( void )
 
                 /*analyze_segment = END_OF_PEAK; //W.K.*/ return EndOfPeak();
             }
+
+// The signal has crossed well past the baseline into the OPPOSITE direction, so
+// end this peak and immediately open one in that direction at the current sample.
+// Without the hand-off the falling side of a dip that follows a positive peak is
+// absorbed into that peak, and the recovery (rising, still below baseline) would
+// start a spurious positive peak through the peak_alg==1 bypass - so the dip never
+// gets an entry of its own. JW 08/28/26
+            if( pDetector->neg_peaks && (peak_polarity * height < -noise) ) {
+                next_skim_starting_point = raw_sample;
+                next_start_of_peak = raw_data.time;
+                int new_polarity = -peak_polarity;
+                int saved_flags = EndOfPeak();
+                // EndOfPeak may have reset peak_polarity; force it to the opposite of
+                // the peak just ended and open a fresh one already past its start,
+                // since height has already moved well beyond the baseline.
+                peak_polarity = new_polarity;
+                peak_area = height * dq.segment_width;
+                skim_starting_point = raw_sample;
+                peak.From = start_of_peak = raw_data.time;
+                analyze_segment = PEAK_RISING;
+                return saved_flags;
+            }
             return 0;
         }
 
@@ -685,7 +731,7 @@ void Integrator::BetweenPeaks( void )
             long height = scaled_sample - act_thresh;
 
             next_peak_area += height * dq.segment_width;
-            if( (scaled_sample - prev_scaled_sample) > noise ) { // if still rising,...
+            if( peak_polarity*(scaled_sample - prev_scaled_sample) > noise ) { // if still moving away from baseline,... JW 08/28/26
                 // .continue w/ new peak.
                 analyze_segment = NEW_PEAK;
             }
@@ -703,7 +749,7 @@ void Integrator::BetweenPeaks( void )
 
             next_peak_area += height * dq.segment_width;
 
-            if( (scaled_sample - prev_scaled_sample) > noise ) { // if new peak still rising,...
+            if( peak_polarity*(scaled_sample - prev_scaled_sample) > noise ) { // if new peak still moving away from baseline,... JW 08/28/26
                 // .process the previous peak.
                 peak_rising = TRUE;
                 /*analyze_segment = END_OF_PEAK; //W.K.*/ EndOfPeak();
@@ -726,7 +772,9 @@ void Integrator::BetweenPeaks( void )
             if(!pDetector->ext_det) { // regular case. Cond added 11/23/08
 
                 double cur_peak_area;
-                if(pDetector->peak_alg != 1) {  // if baseline projection,...
+                // Negative peaks always use baseline projection - tangent-skim geometry
+                // was designed for upward peaks and would cancel a downward one. JW 08/28/26
+                if(pDetector->peak_alg != 1 || peak_polarity < 0) {  // if baseline projection,...
 #if 0    /* UNUSED CODE  -  BDF  -  08/28/92   11:37 */
                     long height = scaled_sample - act_thresh;
       long scratch = height / 2;
@@ -787,7 +835,9 @@ void Integrator::BetweenPeaks( void )
             // .recognize the peak.
 //  if( peak.Area >= pDetector->MinArea && peak.Height >= pDetector->MinHeight ) {
 //  if( peak.Area >= (long)(pDetector->MinArea) && peak.Height >= (long)(pDetector->MinHeight) ) {  // replacement. P.P. 10/03/04
-            if( peak.Area >= (double)(pDetector->MinArea) && peak.Height >= (long)(pDetector->MinHeight) ) {  // area is double now. P.P. 08/25/17
+            // peak_polarity* so a negative peak is tested on its magnitude. With the
+            // option off polarity is always +1 and this is the original test. JW 08/28/26
+            if( peak_polarity*peak.Area >= (double)(pDetector->MinArea) && peak_polarity*peak.Height >= (long)(pDetector->MinHeight) ) {  // area is double now. P.P. 08/25/17
                 flags=PeakMatchup();            // Match peaks with components.
             }
 
@@ -802,6 +852,12 @@ void Integrator::BetweenPeaks( void )
             start_of_peak        = next_start_of_peak;
             skim_starting_point  = next_skim_starting_point;
             prev_retention_time  = 0l;
+            // Keep peak_polarity when handing off to a fused peak (PEAK_RISING) - that
+            // peak was found by the same-direction test, so it shares this polarity.
+            // Only reset on the way back to BETWEEN_PEAKS. JW 08/28/26
+            if(analyze_segment == BETWEEN_PEAKS) {
+                peak_polarity = 1;
+            }
             return flags;
         }
 

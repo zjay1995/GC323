@@ -18,12 +18,61 @@ Current release: **v70.28**, built 2026-08-25 → `GC323_v70.28.exe`
 
 ## Building
 
-Open `GC323_v70.28/WPEAK.PRJ` in the Borland IDE (`BORLANDC/BIN`) and build. The
-output is `WPEAK.EXE`; rename it to `GC323_v<version>.exe` when releasing.
+The toolchain is **Borland C++ 3.1** (1992), in `BORLANDC/`. The build recipe is
+`GC323_v70.28/BC.BAT`:
+
+```
+subst s: D:\BORLANDC
+path s:\bin;%path
+set tmp=c:\temp
+set temp=c:\temp
+set LIB=
+set INCLUDE=
+bc.exe
+```
+
+Then open `WPEAK.PRJ` in the IDE and build. The output is `WPEAK.EXE`; rename it to
+`GC323_v<version>.exe` when releasing.
+
+Note that `BC.EXE`, `BCC.EXE`, `TLINK.EXE`, `BRCC.EXE` and `MAKE.EXE` are **DOS**
+protected-mode programs (Borland's BOSS/DPMI extender), not Windows programs. They
+need a DOS environment — a 32-bit Windows install, a VM, or DOSBox. otvdm will not
+run them; it is a Win16 layer only. `BCW.EXE`, the Windows-hosted IDE, is Win16 and
+does load under otvdm, but this copy of the toolchain is missing `BWCC.DLL` (only
+`BWCC.H` and `BWCC.LIB` are present — the runtime DLL normally lives in the Windows
+system directory and was never copied here), so it cannot start.
 
 `WINSTUB.EXE` must stay in the source folder — `WPEAK.DEF` names it, and the link
-fails without it. `WPEAK.RC` also pulls three bitmaps (`bkgr`, `statbar`, `statline`)
-from a `winutil\` folder on the include path, not from the source folder.
+fails without it.
+
+### Building here with DOSBox-X
+
+`Build GC323.cmd` opens the Borland IDE in DOSBox-X with the mounts `BC.BAT` expects:
+`S:` = `BORLANDC`, `D:` = the source, `C:` = a scratch drive holding `C:\TEMP`. Config
+is `_tools/dosbox-x/gc323.conf`. Verified 2026-08-25: the IDE starts, and
+`bc.exe /b wpeak.prj` does drive a real batch build.
+
+### ⚠ The source tree is incomplete — it cannot be built yet
+
+The build gets going and then fails with **677 errors**. The cause is not the
+toolchain or the emulator: **three in-house library folders are missing from this
+repository** and from every other copy on the machine.
+
+| Missing folder | `#include`s referencing it |
+|---|---|
+| `winlib\` | 74 |
+| `wcpplib\` | 48 |
+| `winutil\` | 47 |
+
+Their compiled libraries are missing too — the project links `WINLIB.LIB`,
+`WCPPLIB.LIB`, `WINUTIL.LIB`, `UTIL.LIB`, `PLIB.LIB`, `NLIB.LIB` and `WMATH.LIB`, and
+none of them are anywhere in the repo, in `BORLANDC/`, or in any of the archived zips.
+`BORLANDC/CRTL/WINLIB` is Borland's own directory and is unrelated.
+
+These are shared PID Analyzer libraries that lived alongside the application source on
+the original build PC. **Copy those three folders (and their `.LIB` files) from the
+machine that produced `GC323_v70.28.exe` into this repo**, then the build should
+complete — here or anywhere else.
 
 ## Which model a build is
 

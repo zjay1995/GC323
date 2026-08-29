@@ -685,6 +685,7 @@ BEGIN
 //	CONTROL "Lamp Save", IDD_LAMP_SAVE, "BUTTON", BS_AUTOCHECKBOX | WS_TABSTOP, 181, 118, 53, 12
 	CONTROL "Lamp Save", IDD_LAMP_SAVE, "BUTTON", BS_AUTOCHECKBOX | WS_TABSTOP, 11, 135, 53, 12  // P.P. 04/16/07
 	CONTROL "Data to Excel", IDD_DATA_EXCEL, "BUTTON", BS_AUTOCHECKBOX | WS_TABSTOP, 11, 155, 65, 12  // P.P. 04/16/07
+	CONTROL "Include Negative Peaks", IDD_NEG_PEAKS, "BUTTON", BS_AUTOCHECKBOX | WS_TABSTOP, 11, 172, 100, 10  // JW 08/28/26
 
 
 //	CONTROL "&On/Off", IDD_DETECTOR_ON_OFF, "BUTTON", BS_AUTOCHECKBOX | WS_TABSTOP, 153, 8, 45, 12
@@ -1634,6 +1635,7 @@ STRINGTABLE LOADONCALL MOVEABLE DISCARDABLE
  IDD_INVERT,		 "Invert signal"          //
  IDD_RANGEAUTO,          "Auto Range, ON/OFF"                   //
  IDD_DATA_EXCEL,         "Data to Excel, ON/OFF"
+ IDD_NEG_PEAKS,          "Include Negative Peaks - integrate downward peaks as well, ON/OFF"
 
  IDD_METHOD_NOTES,	 "Notes about the method"
  IDD_RUN_NOTES,		 "Notes about the run"

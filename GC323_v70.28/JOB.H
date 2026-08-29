@@ -141,7 +141,8 @@ const unsigned long job_file_version_oldest=2;
 //const unsigned long job_file_version=41; // P.P. 12/01/17 - cal_results[] values are double now.
 //const unsigned long job_file_version=42; // P.P. 03/26/18 - desorber wait time added.
 //const unsigned long job_file_version=43; // P.P. 07/16/18 - desorber and fid temperatures added as separate from det_inj temp.
-const unsigned long job_file_version=44; // P.P. 03/26/19 - flow slope and intersect added.
+//const unsigned long job_file_version=44; // P.P. 03/26/19 - flow slope and intersect added.
+const unsigned long job_file_version=45; // JW 08/28/26 - Detector "Include Negative Peaks".
 #endif
 
 

@@ -47,6 +47,7 @@ class Detector {
   int ext_det;     // P.P. 11/14/08
   int invert;      // P.P. 03/25/09 here 11/06/09
   int data_to_excel; // P.P. 02/24/12
+  int neg_peaks;   // Include Negative Peaks - integrate downward excursions too. JW 08/28/26
   Component components[COMPONENT_ROWS];  // components form & calibration standards
   int FindRefCompIndex();
   Component *FindRefComp();
