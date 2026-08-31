@@ -1,0 +1,68 @@
+NEGTEST.JOB - sample job for testing v70.29
+===========================================
+
+Base: TEST.JOB, with exactly one field changed.
+
+    AutoZero Time (Method) ....... 20 s   (was 5 s)
+
+Everything else is byte-for-byte TEST.JOB: oven 45 C, inj/det 45 C,
+analysis time 15:00, sample time 5 s, isothermal (no ramp),
+manual syringe injection, job file version 44.
+
+
+WHAT TO CHECK
+-------------
+
+1. About box
+
+   Should read:   Build 70.29  2026-08-28
+
+   If it still says 70.28, the build did not pick up the new source
+   and nothing below will work.
+
+2. AutoZero Time
+
+   Method -> Edit.  The field to the right of Sample Time is now
+   labelled "AutoZero Time" (it used to say "Inject Time") and should
+   show 0:20 when this job is loaded.
+
+   Start a run.  The status line counts down "AutoZero: 20", not
+   "Sampling: 20".
+
+   Range is 0 to 30 s.  A value of 0 keeps the old fixed 5 s.
+
+3. Include Negative Peaks
+
+   This is a NEW per-detector setting.  It cannot be stored in a
+   version 44 job file, so it loads OFF.  Set it by hand:
+
+       Detector A  ->  tick   "Include Negative Peaks"
+                   ->  clear  "Invert"
+       Detector B  ->  same
+
+   then save the job.  Saving rewrites the file as version 45 and the
+   setting sticks from then on.
+
+   With Invert cleared the signal keeps its true polarity, so air and
+   methanol read negative while benzene reads positive.  With the
+   option ticked the negative ones get their own rows in the peak
+   table, carrying negative Area and Height.  Compare magnitudes to
+   judge whether sensitivity is the same either way.
+
+   Min. Area and Min. Height are 0 in this job, so nothing is filtered
+   out on size.
+
+
+BEFORE TRUSTING ANY NUMBERS
+---------------------------
+
+Run a chromatogram you already know with "Include Negative Peaks"
+switched OFF, and confirm the peak table matches what v70.28 produced.
+That checks the unchanged path.  Then switch it on.
+
+
+NOTE
+----
+
+A job saved by v70.29 is version 45 and CANNOT be opened by v70.28 or
+earlier.  Keep a copy of any job you may need to go back to.
