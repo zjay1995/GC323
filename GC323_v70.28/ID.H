@@ -217,7 +217,7 @@
 
 #define IDD_RUNLIST             310
 #define IDD_RUNLIST_LABEL       311
-#define IDD_NEG_PEAKS           312  // Include Negative Peaks, Detector dialog. JW 08/28/26
+#define IDD_NEG_PEAKS           319  // Include Negative Peaks, Detector dialog. JW 08/28/26
 #define IDD_SELECT_ALL		312
 #define IDD_UNSELECT_ALL	313
 #define IDD_PEAKLIST		314
